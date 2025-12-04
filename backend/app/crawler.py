@@ -23,7 +23,8 @@ async def fetch_url(url: str):
         except Exception as e:
             pass  # Error decoding
 
-    async with httpx.AsyncClient(verify=False) as client:  # 暫時停用 SSL 驗證
+    async with httpx.AsyncClient() as client:  # SSL 驗證已啟用
+
         try:
             response = await client.get(
                 url, 

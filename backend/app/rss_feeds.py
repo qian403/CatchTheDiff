@@ -47,7 +47,9 @@ RSS_FEEDS = {
     13: get_media_google_news_feeds(13), # 華視新聞 (透過 Google News)
     14: get_media_google_news_feeds(14), # 民視新聞 (透過 Google News)
     15: get_media_google_news_feeds(15), # 三立新聞 (透過 Google News)
-    16: get_media_google_news_feeds(16), # 風傳媒 (透過 Google News)
+    16: [  # 風傳媒 (使用官方 RSS)
+        "https://www.storm.mg/api/getRss/channel_id/2?path=https://www.storm.mg/article",
+    ],
     17: get_media_google_news_feeds(17), # 關鍵評論網 (透過 Google News)
     18: [  # 報導者 (使用官方 RSS)
         "https://public.twreporter.org/rss/twreporter-rss.xml",  # 新聞總覽

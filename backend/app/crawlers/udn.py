@@ -29,7 +29,7 @@ class UdnCrawler(BaseCrawler):
         }
         
         try:
-            async with httpx.AsyncClient(verify=False, timeout=15.0, headers=headers) as client:
+            async with httpx.AsyncClient(timeout=15.0, headers=headers) as client:
                 response = await client.get(self.BASE_URL)
                 soup = BeautifulSoup(response.text, 'html.parser')
                 

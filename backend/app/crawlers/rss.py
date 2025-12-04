@@ -30,7 +30,7 @@ class RssCrawler(BaseCrawler):
         """從 RSS feeds 獲取新聞列表"""
         news_items = []
         
-        async with httpx.AsyncClient(verify=False, timeout=10.0) as client:
+        async with httpx.AsyncClient(timeout=10.0) as client:
             for rss_url in self.rss_urls:
                 try:
                     response = await client.get(rss_url)
