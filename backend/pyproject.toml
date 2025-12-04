@@ -1,0 +1,28 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiohttp>=3.13.2",
+    "aiosqlite>=0.21.0",
+    "alembic>=1.17.2",
+    "apscheduler>=3.11.1",
+    "beautifulsoup4>=4.14.3",
+    "cachetools>=6.2.2",
+    "diff-match-patch>=20241021",
+    "drissionpage>=4.1.1.2",
+    "fastapi>=0.123.2",
+    "feedparser>=6.0.12",
+    "googlenewsdecoder>=0.1.7",
+    "greenlet>=3.2.4",
+    "httpx>=0.28.1",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.12.0",
+    "python-dotenv>=1.2.1",
+    "slowapi>=0.1.9",
+    "sqlalchemy>=2.0.44",
+    "trafilatura>=2.0.0",
+    "uvicorn[standard]>=0.38.0",
+]
