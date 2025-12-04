@@ -1,22 +1,26 @@
 <template>
   <div class="stat-card glass-panel">
-    <div class="stat-icon" :style="{ backgroundColor: iconBgColor }">
-      <span class="material-icons">{{ icon }}</span>
+    <div class="stat-icon" :style="{ backgroundColor: props.iconBgColor }">
+      <span class="material-icons">{{ props.icon }}</span>
     </div>
     <div class="stat-content">
-      <h3 class="stat-value">{{ value }}</h3>
-      <p class="stat-label">{{ label }}</p>
+      <h3 class="stat-value">{{ props.value }}</h3>
+      <p class="stat-label">{{ props.label }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+interface Props {
   icon: string;
   value: string | number;
   label: string;
   iconBgColor?: string;
-}>();
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  iconBgColor: 'rgba(59, 130, 246, 0.1)'
+});
 </script>
 
 <style scoped>

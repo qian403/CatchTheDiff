@@ -42,11 +42,13 @@
             <div class="title-comparison">
               <div class="old-title">
                 <span class="diff-marker">舊</span>
+                <!-- eslint-disable-next-line vue/no-v-html -- Safe: sanitized with DOMPurify -->
                 <span v-html="highlightTitleDiff(previousTitle, displayTitle, 'old')"></span>
               </div>
               <div class="arrow-separator">→</div>
               <div class="new-title">
                 <span class="diff-marker">新</span>
+                <!-- eslint-disable-next-line vue/no-v-html -- Safe: sanitized with DOMPurify -->
                 <span v-html="highlightTitleDiff(previousTitle, displayTitle, 'new')"></span>
               </div>
             </div>
@@ -94,6 +96,7 @@ import { formatTimestamp } from '../utils/formatters';
 import VersionTimeline from '../components/VersionTimeline.vue';
 import DiffViewer from '../components/DiffViewer.vue';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
+import DOMPurify from 'dompurify';
 
 const route = useRoute();
 const newsStore = useNewsStore();
@@ -113,16 +116,21 @@ const selectedVersion = computed(() => {
 });
 
 
+// Memoize sorted versions for better performance
+const sortedVersions = computed(() => {
+  if (!currentNews.value) return [];
+  return [...currentNews.value.versions].sort((a, b) => b.time - a.time);
+});
+
 const displayTitle = computed(() => selectedVersion.value?.title || '');
 const displayBody = computed(() => selectedVersion.value?.body || '');
 
 // Check if title has changed from previous version
 const previousVersion = computed(() => {
-  if (!currentNews.value || !selectedVersionId.value) return null;
-  const sorted = [...currentNews.value.versions].sort((a, b) => b.time - a.time);
-  const currentIndex = sorted.findIndex(v => v.id === selectedVersionId.value);
-  if (currentIndex !== -1 && currentIndex < sorted.length - 1) {
-    return sorted[currentIndex + 1];
+  if (!selectedVersionId.value) return null;
+  const currentIndex = sortedVersions.value.findIndex(v => v.id === selectedVersionId.value);
+  if (currentIndex !== -1 && currentIndex < sortedVersions.value.length - 1) {
+    return sortedVersions.value[currentIndex + 1];
   }
   return null;
 });
@@ -134,7 +142,7 @@ const titleHasChanged = computed(() => {
 
 // Simple character-level diff highlighting
 function highlightTitleDiff(oldText: string, newText: string, mode: 'old' | 'new'): string {
-  if (!oldText || !newText) return mode === 'old' ? oldText : newText;
+  if (!oldText || !newText) return DOMPurify.sanitize(mode === 'old' ? oldText : newText);
 
   // Simple word-level diff for readability
   const oldWords = oldText.split('');
@@ -156,7 +164,8 @@ function highlightTitleDiff(oldText: string, newText: string, mode: 'old' | 'new
         j++;
       }
     }
-    return result;
+    // Sanitize the generated HTML to prevent XSS
+    return DOMPurify.sanitize(result);
   } else {
     // Highlight additions in green
     let result = '';
@@ -173,7 +182,8 @@ function highlightTitleDiff(oldText: string, newText: string, mode: 'old' | 'new
         i++;
       }
     }
-    return result;
+    // Sanitize the generated HTML to prevent XSS
+    return DOMPurify.sanitize(result);
   }
 }
 
@@ -203,27 +213,23 @@ async function loadNewsDetail() {
   await newsStore.loadNewsDetail(newsId.value);
   if (currentNews.value && currentNews.value.versions.length > 0) {
     // Select latest version by default
-    const sorted = [...currentNews.value.versions].sort((a, b) => b.time - a.time);
-    selectedVersionId.value = sorted[0].id;
+    selectedVersionId.value = sortedVersions.value[0]?.id || null;
   }
 }
 
 function updateGitDiff() {
   if (!currentNews.value || !selectedVersionId.value) return;
 
-  const sorted = [...currentNews.value.versions].sort((a, b) => b.time - a.time);
-  const currentIndex = sorted.findIndex(v => v.id === selectedVersionId.value);
+  const currentIndex = sortedVersions.value.findIndex(v => v.id === selectedVersionId.value);
 
-  if (currentIndex !== -1 && currentIndex < sorted.length - 1) {
-    const prevVersion = sorted[currentIndex + 1];
+  if (currentIndex !== -1 && currentIndex < sortedVersions.value.length - 1) {
+    const prevVersion = sortedVersions.value[currentIndex + 1];
     // Compare: Source (Old) -> Target (New)
     compareSourceId.value = prevVersion.id;
     compareTargetId.value = selectedVersionId.value;
     fetchDiff();
   } else {
     // No previous version (Initial commit)
-    // We could show a message or just clear comparison
-    // For now, let's clear comparison but keep toggle on (maybe show "Initial Version" in UI?)
     compareSourceId.value = null;
     compareTargetId.value = null;
     newsStore.currentDiff = null;

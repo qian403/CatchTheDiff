@@ -1,10 +1,11 @@
 <template>
-    <div v-if="isOpen" class="modal-overlay" @click.self="close">
+    <div v-if="isOpen" class="modal-overlay" @click.self="close" @keydown.esc="close" role="dialog" aria-modal="true"
+        aria-labelledby="filter-modal-title">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>篩選與排序</h3>
-                <button class="close-btn" @click="close">
-                    <span class="material-icons">close</span>
+                <h3 id="filter-modal-title">篩選與排序</h3>
+                <button ref="closeButton" class="close-btn" @click="close" aria-label="關閉篩選視窗">
+                    <span class="material-icons" aria-hidden="true">close</span>
                 </button>
             </div>
 
@@ -12,13 +13,13 @@
                 <!-- Sort Options -->
                 <div class="filter-section">
                     <h4>排序方式</h4>
-                    <div class="radio-group">
+                    <div class="radio-group" role="radiogroup" aria-label="排序方式">
                         <label class="radio-label">
-                            <input type="radio" v-model="localFilters.sortBy" value="newest">
+                            <input type="radio" v-model="localFilters.sortBy" value="newest" name="sort">
                             <span>最新發布</span>
                         </label>
                         <label class="radio-label">
-                            <input type="radio" v-model="localFilters.sortBy" value="recently_changed">
+                            <input type="radio" v-model="localFilters.sortBy" value="recently_changed" name="sort">
                             <span>最近變更</span>
                         </label>
                     </div>
@@ -27,7 +28,7 @@
                 <!-- Date Filter -->
                 <div class="filter-section">
                     <h4>日期</h4>
-                    <input type="date" v-model="localFilters.date" class="date-input">
+                    <input type="date" v-model="localFilters.date" class="date-input" aria-label="選擇日期">
                 </div>
 
                 <!-- Source Filter -->
@@ -35,13 +36,14 @@
                     <div class="section-header">
                         <h4>媒體來源</h4>
                         <div class="source-actions">
-                            <button @click="selectAllSources" class="text-btn">全選</button>
-                            <button @click="clearSources" class="text-btn">清除</button>
+                            <button @click="selectAllSources" class="text-btn" aria-label="選擇所有媒體來源">全選</button>
+                            <button @click="clearSources" class="text-btn" aria-label="清除所有媒體來源">清除</button>
                         </div>
                     </div>
-                    <div class="sources-grid">
+                    <div class="sources-grid" role="group" aria-label="媒體來源列表">
                         <label v-for="(name, id) in sources" :key="id" class="checkbox-label">
-                            <input type="checkbox" :value="Number(id)" v-model="localFilters.selectedSources">
+                            <input type="checkbox" :value="Number(id)" v-model="localFilters.selectedSources"
+                                :aria-label="name">
                             <span class="checkbox-text">{{ name }}</span>
                         </label>
                     </div>
@@ -49,15 +51,15 @@
             </div>
 
             <div class="modal-footer">
-                <button class="reset-btn" @click="resetFilters">重置</button>
-                <button class="apply-btn" @click="applyFilters">套用篩選</button>
+                <button class="reset-btn" @click="resetFilters" aria-label="重置所有篩選條件">重置</button>
+                <button class="apply-btn" @click="applyFilters" aria-label="套用篩選條件">套用篩選</button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, nextTick } from 'vue';
 
 const props = defineProps<{
     isOpen: boolean;
@@ -80,14 +82,19 @@ const localFilters = ref({
     selectedSources: [] as number[]
 });
 
+const closeButton = ref<HTMLButtonElement>();
+
 // Sync local state with props when modal opens
-watch(() => props.isOpen, (newVal) => {
+watch(() => props.isOpen, async (newVal) => {
     if (newVal) {
         localFilters.value = {
             sortBy: props.currentFilters.sortBy,
             date: props.currentFilters.date,
             selectedSources: [...props.currentFilters.selectedSources]
         };
+        // Focus close button for accessibility
+        await nextTick();
+        closeButton.value?.focus();
     }
 });
 

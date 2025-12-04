@@ -137,16 +137,30 @@ def normalize_url(url: str) -> str:
         return url
 
 async def process_news(db: AsyncSession, url: str, source_id: int):
-    """處理新聞：抓取、解析、儲存"""
-    source_name = get_source_name(source_id)
-    pass  # Processing news
+    """處理單一新聞"""
+    # URL 黑名單 - 過濾掉非新聞頁面
+    url_blacklist = [
+        '/live',           # 直播頁面
+        '/realtime',       # 台視即時新聞列表
+        '/video',          # 單純影片頁面
+        '/playlist',       # 播放列表
+        '/channel',        # 頻道頁面
+        'ishopping',       # 購物網站
+        '/shop',           # 購物頁面
+        '/store',          # 商店頁面
+        '/product',        # 產品頁面
+    ]
     
-    # 1. 標準化 URL
-    normalized_id = normalize_url(url)
-    if normalized_id != url:
-        pass  # URL normalized
+    # 檢查 URL 是否在黑名單中
+    for blacklisted in url_blacklist:
+        if blacklisted in url.lower():
+            return  # 跳過此 URL
     
-    # 2. 檢查新聞是否存在 (優先使用 normalized_id)
+    # URL 正規化處理
+    normalized_url = normalize_url(url, source_id)
+    normalized_id = hashlib.md5(normalized_url.encode()).hexdigest()
+    
+    # 檢查是否已存在
     news = await crud.get_news_by_normalized_id(db, normalized_id)
     
     # 如果找不到，再嘗試用原始 URL 找 (兼容舊資料)
@@ -154,14 +168,12 @@ async def process_news(db: AsyncSession, url: str, source_id: int):
         news = await crud.get_news_by_url(db, url)
         if news:
             # 如果用舊 URL 找到了，更新其 normalized_id
-            pass  # Updating normalized_id
             news.normalized_id = normalized_id
             await db.commit()
     
     html = await fetch_url(url)
     if not html:
         return  # Cannot fetch content
-        return
 
     title, body = parse_content(html, source_id)
     current_time = int(time.time())

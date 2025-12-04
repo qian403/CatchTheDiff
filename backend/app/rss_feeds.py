@@ -40,7 +40,7 @@ RSS_FEEDS = {
     6: [  # 新頭殼 (使用官方 RSS)
         "https://newtalk.tw/rss/all/",
     ],
-    7: get_media_google_news_feeds(7),   # NOWnews (透過 Google News)
+    # 7: NOWnews - 已移除
     8: get_media_google_news_feeds(8),   # 聯合新聞網 (透過 Google News)
     9: get_media_google_news_feeds(9),   # TVBS (透過 Google News)
     10: get_media_google_news_feeds(10), # 中廣新聞網 (透過 Google News)

@@ -5,14 +5,14 @@
         <span class="material-icons logo-icon">change_history</span>
         <span class="logo-text">CatchTheDiff</span>
       </router-link>
-      
+
       <div class="header-actions">
         <nav class="nav-links">
           <router-link to="/" class="nav-link" active-class="active">首頁</router-link>
           <router-link to="/recent" class="nav-link" active-class="active">變更紀錄</router-link>
           <router-link to="/stats" class="nav-link" active-class="active">統計資訊</router-link>
         </nav>
-        
+
         <a href="https://github.com/qian403/CatchTheDiff" target="_blank" class="github-link">
           <span class="material-icons">code</span>
           GitHub
@@ -116,5 +116,65 @@
 
 .github-link:hover {
   color: var(--color-text-primary);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .header-content {
+    height: 56px;
+    padding: 0 var(--spacing-md);
+  }
+
+  .logo {
+    font-size: 1rem;
+    margin-right: var(--spacing-md);
+  }
+
+  .logo-icon {
+    font-size: 20px;
+  }
+
+  .logo-text {
+    display: none;
+    /* Hide logo text on mobile */
+  }
+
+  .header-actions {
+    gap: var(--spacing-md);
+  }
+
+  .nav-links {
+    gap: var(--spacing-sm);
+  }
+
+  .nav-link {
+    font-size: 0.75rem;
+    padding: 2px 0;
+  }
+
+  .github-link {
+    font-size: 0.75rem;
+  }
+
+  .github-link span {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text {
+    display: inline;
+    /* Show logo text but smaller */
+    font-size: 0.875rem;
+  }
+
+  .nav-link {
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  .github-link {
+    gap: 2px;
+  }
 }
 </style>
