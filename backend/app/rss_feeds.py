@@ -37,7 +37,9 @@ RSS_FEEDS = {
         "https://news.ltn.com.tw/rss/society.xml",      # 社會
         "https://news.ltn.com.tw/rss/local.xml",        # 地方
     ],
-    6: get_media_google_news_feeds(6),   # 新頭殼 (透過 Google News)
+    6: [  # 新頭殼 (使用官方 RSS)
+        "https://newtalk.tw/rss/all/",
+    ],
     7: get_media_google_news_feeds(7),   # NOWnews (透過 Google News)
     8: get_media_google_news_feeds(8),   # 聯合新聞網 (透過 Google News)
     9: get_media_google_news_feeds(9),   # TVBS (透過 Google News)

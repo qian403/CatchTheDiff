@@ -22,6 +22,7 @@ from .ettoday import EttodayParser
 from .ltn import LibertytimesParser
 from .reporter import ReporterParser
 from .storm import StormParser
+from .newtalk import NewtalkParser
 
 # 解析器映射表
 # key: source_id, value: Parser class
@@ -30,6 +31,7 @@ PARSERS: dict[int, Type[NewsParser]] = {
     3: CNAParser,           # 中央社
     4: EttodayParser,       # ETtoday
     5: LibertytimesParser,  # 自由時報
+    6: NewtalkParser,       # 新頭殼
     8: UDNParser,           # 聯合新聞網
     16: StormParser,        # 風傳媒
     18: ReporterParser,     # 報導者
