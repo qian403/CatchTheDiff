@@ -28,3 +28,28 @@ export interface NewsSource {
     name: string;
     color: string;
 }
+
+export interface StatsOverview {
+    totalNews: number;
+    totalEdits: number;
+    mostActiveSource: { name: string; editCount: number } | null;
+    mostEditedNews: { title: string; versionCount: number } | null;
+}
+
+export interface EditFrequencyItem {
+    sourceId: number;
+    sourceName: string;
+    newsCount: number;
+    editCount: number;
+    editRatio: number;
+}
+
+export interface TimelineSource {
+    sourceName: string;
+    data: Record<string, { newNews: number; edits: number }>;
+}
+
+export interface TimelineData {
+    sources: TimelineSource[];
+    dates: string[];
+}

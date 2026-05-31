@@ -94,8 +94,8 @@ async function loadChangeHistory(reset = false) {
     }
 
     page.value++;
-  } catch (err: any) {
-    error.value = err.message || '載入變更紀錄失敗';
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : '載入變更紀錄失敗';
     console.error(err);
   } finally {
     loading.value = false;
@@ -109,7 +109,7 @@ const goToDetail = (id: number) => {
 
 <style scoped>
 .recent-view {
-  padding-bottom: var(--spacing-2xl);
+  padding-bottom: var(--spacing-3xl);
 }
 
 .page-header {
@@ -117,20 +117,22 @@ const goToDetail = (id: number) => {
 }
 
 .page-title {
-  font-size: 2rem;
+  font-family: var(--font-family-serif);
+  font-size: 1.75rem;
   font-weight: 700;
-  margin-bottom: 4px;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
 }
 
 .page-subtitle {
   color: var(--color-text-tertiary);
+  font-size: 0.9rem;
 }
 
 .news-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  column-gap: var(--spacing-lg);
-  row-gap: var(--spacing-4xl);
+  gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 }
 
@@ -139,7 +141,7 @@ const goToDetail = (id: number) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-2xl);
+  padding: var(--spacing-3xl) var(--spacing-xl);
   color: var(--color-text-secondary);
 }
 
@@ -170,8 +172,10 @@ const goToDetail = (id: number) => {
   padding: 8px 24px;
   background: var(--color-accent-primary);
   color: white;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
   font-weight: 600;
+  cursor: pointer;
   transition: background var(--transition-fast);
 }
 

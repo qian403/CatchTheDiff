@@ -2,9 +2,9 @@
   <div class="app-layout">
     <AppHeader />
     <main class="container">
-      <router-view v-slot="{ Component }">
+      <router-view v-slot="{ Component, route }">
         <transition name="fade" mode="out-in">
-          <component :is="Component" />
+          <component :is="Component" :key="route.path" />
         </transition>
       </router-view>
     </main>
@@ -18,6 +18,6 @@ import AppHeader from './components/AppHeader.vue';
 <style>
 .app-layout {
   min-height: 100vh;
-  background-color: var(--color-bg-primary);
+  background: transparent;
 }
 </style>

@@ -84,6 +84,7 @@ import {
 } from 'chart.js';
 import StatCard from '../components/StatCard.vue';
 import apiClient from '../api/client';
+import type { StatsOverview, EditFrequencyItem, TimelineData, TimelineSource } from '../types';
 
 ChartJS.register(
   CategoryScale,
@@ -107,14 +108,14 @@ const sourceColors = [
 ];
 
 const loading = ref(true);
-const stats = ref<any>(null);
-const editFrequency = ref<any[]>([]);
-const timelineData = ref<any>(null);
+const stats = ref<StatsOverview | null>(null);
+const editFrequency = ref<EditFrequencyItem[]>([]);
+const timelineData = ref<TimelineData | null>(null);
 
 const publicationChartData = computed(() => {
   if (!timelineData.value) return null;
 
-  const datasets = timelineData.value.sources.map((source: any, index: number) => ({
+  const datasets = timelineData.value.sources.map((source: TimelineSource, index: number) => ({
     label: source.sourceName,
     data: timelineData.value.dates.map((date: string) => source.data[date].newNews),
     borderColor: sourceColors[index % sourceColors.length],
@@ -132,7 +133,7 @@ const publicationChartData = computed(() => {
 const editChartData = computed(() => {
   if (!timelineData.value) return null;
 
-  const datasets = timelineData.value.sources.map((source: any, index: number) => ({
+  const datasets = timelineData.value.sources.map((source: TimelineSource, index: number) => ({
     label: source.sourceName,
     data: timelineData.value.dates.map((date: string) => source.data[date].edits),
     borderColor: sourceColors[index % sourceColors.length],
@@ -210,25 +211,27 @@ onMounted(() => {
 
 <style scoped>
 .stats-view {
-  padding-bottom: var(--spacing-2xl);
+  padding-bottom: var(--spacing-3xl);
 }
 
 .page-title {
-  font-size: 2rem;
+  font-family: var(--font-family-serif);
+  font-size: 1.75rem;
   font-weight: 700;
+  color: var(--color-text-primary);
   margin-bottom: var(--spacing-xl);
 }
 
 .loading {
   text-align: center;
-  padding: var(--spacing-2xl);
-  color: var(--color-text-secondary);
+  padding: var(--spacing-3xl);
+  color: var(--color-text-tertiary);
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
   margin-bottom: var(--spacing-2xl);
 }
 
@@ -237,7 +240,8 @@ onMounted(() => {
 }
 
 .section-title {
-  font-size: 1.5rem;
+  font-family: var(--font-family-serif);
+  font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: var(--spacing-lg);
   color: var(--color-text-primary);
@@ -245,9 +249,9 @@ onMounted(() => {
 
 .ranking-table {
   background: var(--color-bg-secondary);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
 }
 
 table {
@@ -264,7 +268,7 @@ th {
   text-align: left;
   font-weight: 600;
   color: var(--color-text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -272,6 +276,7 @@ th {
 td {
   padding: var(--spacing-md);
   border-top: 1px solid var(--color-border);
+  font-size: 0.9rem;
 }
 
 .rank {
@@ -281,7 +286,7 @@ td {
 }
 
 .medal {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
 .source-name {
@@ -289,38 +294,38 @@ td {
 }
 
 .edit-count {
-  color: var(--color-warning);
+  color: var(--color-accent-warning);
   font-weight: 600;
 }
 
 .ratio {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: var(--radius-md);
+  padding: 2px 10px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
 }
 
 .ratio.high {
-  background: rgba(239, 68, 68, 0.1);
-  color: #EF4444;
+  background: rgba(196, 30, 58, 0.08);
+  color: var(--color-accent-danger);
 }
 
 .ratio.medium {
-  background: rgba(245, 158, 11, 0.1);
-  color: #F59E0B;
+  background: rgba(183, 121, 31, 0.08);
+  color: var(--color-accent-warning);
 }
 
 .ratio.low {
-  background: rgba(16, 185, 129, 0.1);
-  color: #10B981;
+  background: rgba(45, 106, 79, 0.08);
+  color: var(--color-accent-success);
 }
 
 .chart-container {
   background: var(--color-bg-secondary);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   padding: var(--spacing-xl);
-  box-shadow: var(--shadow-sm);
   height: 400px;
 }
 </style>

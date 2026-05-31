@@ -20,7 +20,7 @@
       <!-- Main Content -->
       <main class="main-content">
         <!-- Metadata Header -->
-        <div class="meta-header glass-panel">
+        <div class="meta-header">
           <div class="meta-top">
             <div class="source-tag" :style="{ backgroundColor: sourceInfo.color }">
               {{ sourceInfo.name }}
@@ -72,7 +72,7 @@
           </div>
 
           <!-- Single Version Mode -->
-          <div v-else class="single-mode glass-panel">
+          <div v-else class="single-mode">
             <div class="version-indicator">
               當前顯示版本: {{ formatTimestamp(selectedVersion?.time || 0) }}
             </div>
@@ -93,10 +93,10 @@ import { storeToRefs } from 'pinia';
 import { useNewsStore } from '../stores/news';
 import { getSourceInfo } from '../constants/sources';
 import { formatTimestamp } from '../utils/formatters';
+import { highlightTitleDiff } from '../utils/diff';
 import VersionTimeline from '../components/VersionTimeline.vue';
 import DiffViewer from '../components/DiffViewer.vue';
 import LoadingSpinner from '../components/LoadingSpinner.vue';
-import DOMPurify from 'dompurify';
 
 const route = useRoute();
 const newsStore = useNewsStore();
@@ -141,51 +141,6 @@ const titleHasChanged = computed(() => {
 });
 
 // Simple character-level diff highlighting
-function highlightTitleDiff(oldText: string, newText: string, mode: 'old' | 'new'): string {
-  if (!oldText || !newText) return DOMPurify.sanitize(mode === 'old' ? oldText : newText);
-
-  // Simple word-level diff for readability
-  const oldWords = oldText.split('');
-  const newWords = newText.split('');
-
-  if (mode === 'old') {
-    // Highlight deletions in red
-    let result = '';
-    let i = 0, j = 0;
-    while (i < oldWords.length || j < newWords.length) {
-      if (i < oldWords.length && j < newWords.length && oldWords[i] === newWords[j]) {
-        result += oldWords[i];
-        i++;
-        j++;
-      } else if (i < oldWords.length) {
-        result += `<del class="diff-del">${oldWords[i]}</del>`;
-        i++;
-      } else {
-        j++;
-      }
-    }
-    // Sanitize the generated HTML to prevent XSS
-    return DOMPurify.sanitize(result);
-  } else {
-    // Highlight additions in green
-    let result = '';
-    let i = 0, j = 0;
-    while (i < oldWords.length || j < newWords.length) {
-      if (i < oldWords.length && j < newWords.length && oldWords[i] === newWords[j]) {
-        result += newWords[j];
-        i++;
-        j++;
-      } else if (j < newWords.length) {
-        result += `<ins class="diff-ins">${newWords[j]}</ins>`;
-        j++;
-      } else {
-        i++;
-      }
-    }
-    // Sanitize the generated HTML to prevent XSS
-    return DOMPurify.sanitize(result);
-  }
-}
 
 const isComparing = computed(() => compareSourceId.value !== null && compareTargetId.value !== null);
 
@@ -282,7 +237,7 @@ function exitCompareMode() {
 
 <style scoped>
 .news-detail {
-  padding-bottom: var(--spacing-2xl);
+  padding-bottom: var(--spacing-3xl);
 }
 
 .loading-screen,
@@ -292,24 +247,27 @@ function exitCompareMode() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  color: var(--color-text-secondary);
 }
 
 .detail-layout {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 280px 1fr;
   gap: var(--spacing-xl);
   align-items: start;
 }
 
 .sidebar {
   position: sticky;
-  top: 100px;
-  max-height: calc(100vh - 120px);
+  top: 80px;
+  max-height: calc(100vh - 100px);
 }
 
 .meta-header {
   padding: var(--spacing-xl);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-secondary);
   margin-bottom: var(--spacing-xl);
 }
 
@@ -321,10 +279,11 @@ function exitCompareMode() {
 }
 
 .source-tag {
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
+  padding: 2px 10px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-serif);
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: white;
 }
 
@@ -344,34 +303,40 @@ function exitCompareMode() {
   align-items: center;
   gap: 4px;
   color: var(--color-accent-primary);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 500;
+  text-decoration: none;
 }
 
 .original-link:hover {
   text-decoration: underline;
 }
 
-
 .news-title {
-  font-size: 2rem;
+  font-family: var(--font-family-serif);
+  font-size: 1.75rem;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.45;
   margin-bottom: var(--spacing-md);
+  color: var(--color-text-primary);
 }
 
 .title-diff-section {
   margin-top: var(--spacing-md);
   margin-bottom: var(--spacing-lg);
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--color-accent-primary);
 }
 
 .diff-label {
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  color: var(--color-text-tertiary);
   margin-bottom: var(--spacing-sm);
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .title-comparison {
@@ -393,43 +358,43 @@ function exitCompareMode() {
   align-items: flex-start;
   gap: var(--spacing-sm);
   line-height: 1.5;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .diff-marker {
   flex-shrink: 0;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  padding: 2px 6px;
+  padding: 1px 5px;
   border-radius: var(--radius-sm);
   text-align: center;
-  min-width: 32px;
+  min-width: 28px;
 }
 
 .old-title .diff-marker {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #EF4444;
+  background-color: rgba(196, 30, 58, 0.08);
+  color: var(--color-accent-danger);
 }
 
 .new-title .diff-marker {
-  background-color: rgba(16, 185, 129, 0.15);
-  color: #10B981;
+  background-color: rgba(45, 106, 79, 0.08);
+  color: var(--color-accent-success);
 }
 
 .diff-del {
-  background-color: rgba(239, 68, 68, 0.25);
-  color: #EF4444;
+  background-color: rgba(196, 30, 58, 0.12);
+  color: var(--color-accent-danger);
   text-decoration: line-through;
-  padding: 1px 3px;
-  border-radius: 2px;
+  padding: 1px 2px;
+  border-radius: 1px;
 }
 
 .diff-ins {
-  background-color: rgba(16, 185, 129, 0.25);
-  color: #10B981;
+  background-color: rgba(45, 106, 79, 0.12);
+  color: var(--color-accent-success);
   text-decoration: none;
-  padding: 1px 3px;
-  border-radius: 2px;
+  padding: 1px 2px;
+  border-radius: 1px;
   font-weight: 600;
 }
 
@@ -448,8 +413,8 @@ function exitCompareMode() {
   display: flex;
   gap: var(--spacing-xl);
   color: var(--color-text-tertiary);
-  font-size: 0.875rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8rem;
+  border-top: 1px solid var(--color-border);
   padding-top: var(--spacing-md);
 }
 
@@ -459,22 +424,24 @@ function exitCompareMode() {
 
 .single-mode {
   padding: var(--spacing-2xl);
-  border-radius: var(--radius-lg);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
 }
 
 .version-indicator {
   display: inline-block;
-  padding: 4px 12px;
-  background-color: rgba(59, 130, 246, 0.1);
+  padding: 2px 10px;
+  background: rgba(196, 30, 58, 0.06);
   color: var(--color-accent-primary);
-  border-radius: var(--radius-full);
-  font-size: 0.875rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
   margin-bottom: var(--spacing-xl);
 }
 
 .article-body {
-  font-size: 1.125rem;
-  line-height: 1.8;
+  font-size: 1rem;
+  line-height: 1.9;
   color: var(--color-text-secondary);
   white-space: pre-wrap;
 }
@@ -486,7 +453,12 @@ function exitCompareMode() {
   margin-bottom: var(--spacing-lg);
 }
 
-
+.mode-header h2 {
+  font-family: var(--font-family-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
 
 @media (max-width: 1024px) {
   .detail-layout {
@@ -497,6 +469,10 @@ function exitCompareMode() {
     position: static;
     max-height: 400px;
     margin-bottom: var(--spacing-xl);
+  }
+
+  .news-title {
+    font-size: 1.5rem;
   }
 }
 </style>

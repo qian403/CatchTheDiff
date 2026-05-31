@@ -3,8 +3,8 @@
 
 策略：
 - 每個來源獨立排程
-- 高頻率（每5-10分鐘）但每次只爬少量新聞
-- 避免集中爬取導致的卡頓
+- 每小時爬取一次，每次少量新聞
+- 避免集中爬取導致的卡頓與資料庫膨脹
 """
 import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -73,13 +73,13 @@ def start_optimized_scheduler():
         
         # 根據來源特性設定間隔
         if source_id == 8:  # UDN (使用網頁爬蟲)
-            interval_minutes = 10
+            interval_minutes = 60
             limit = 5
         elif source_id == 2:  # 中時 (使用 DrissionPage，較耗資源)
-            interval_minutes = 20  # 增加到 20 分鐘
-            limit = 2  # 減少到 2 則，降低負載
+            interval_minutes = 60
+            limit = 2
         else:
-            interval_minutes = 10
+            interval_minutes = 60
             limit = 3
         
         # 錯開首次執行時間

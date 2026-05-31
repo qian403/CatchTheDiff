@@ -1,5 +1,5 @@
 <template>
-  <div class="diff-viewer glass-panel">
+  <div class="diff-viewer paper-card">
     <div class="diff-header">
       <div class="diff-tabs">
         <button 
@@ -27,7 +27,7 @@
       <div v-else-if="diffFile" class="git-diff-container">
         <DiffView 
           :diffFile="diffFile" 
-          :diffViewTheme="'dark'" 
+          :diffViewTheme="'light'" 
           :diffViewMode="'unified'" 
           :diffViewHighlight="true"
           :diffViewWrap="true"
@@ -98,7 +98,7 @@ const diffFile = computed(() => {
       'plaintext'
     );
     
-    file.initTheme('dark');
+    file.initTheme('light');
     file.init();
 
     return file;
@@ -115,35 +115,34 @@ const diffFile = computed(() => {
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  border-radius: var(--radius-lg);
-  background-color: var(--color-bg-secondary);
 }
 
 .diff-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-md) var(--spacing-lg);
-  background-color: rgba(0, 0, 0, 0.2);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--color-bg-tertiary);
   border-bottom: 1px solid var(--color-border);
 }
 
 .diff-tabs {
   display: flex;
-  gap: var(--spacing-sm);
+  gap: 2px;
 }
 
 .tab-btn {
-  padding: 6px 16px;
-  border-radius: var(--radius-md);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
   color: var(--color-text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 500;
   transition: all var(--transition-fast);
+  cursor: pointer;
 }
 
 .tab-btn:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
 }
 
@@ -161,7 +160,6 @@ const diffFile = computed(() => {
 .git-diff-container {
   height: 100%;
   overflow-y: auto;
-  /* Customize git-diff-view scrollbar if needed */
 }
 
 .loading-container, .empty-state {
@@ -170,9 +168,9 @@ const diffFile = computed(() => {
   align-items: center;
   height: 100%;
   color: var(--color-text-secondary);
+  font-size: 0.9rem;
 }
 
-/* Override git-diff-view styles to match theme if necessary */
 :deep(.diff-view-container) {
   background-color: transparent !important;
 }

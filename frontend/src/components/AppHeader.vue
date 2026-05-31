@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header glass-panel">
+  <header class="app-header">
     <div class="container header-content">
       <router-link to="/" class="logo">
         <span class="material-icons logo-icon">change_history</span>
@@ -31,15 +31,15 @@
   position: sticky;
   top: 0;
   z-index: var(--z-header);
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(247, 244, 237, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
   margin-bottom: var(--spacing-xl);
 }
 
 .header-content {
-  height: 64px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,21 +49,22 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  font-family: var(--font-family-serif);
   font-weight: 700;
   font-size: 1.25rem;
   margin-right: var(--spacing-xl);
+  color: var(--color-text-primary);
+  text-decoration: none;
 }
 
 .logo-icon {
   color: var(--color-accent-primary);
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .logo-text {
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-text-primary);
+  letter-spacing: 0.02em;
 }
 
 .header-actions {
@@ -74,7 +75,7 @@
 
 .nav-links {
   display: flex;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-sm);
 }
 
 .nav-link {
@@ -82,27 +83,19 @@
   font-size: 0.875rem;
   font-weight: 500;
   transition: color var(--transition-fast);
-  padding: 4px 0;
-  position: relative;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
 }
 
 .nav-link:hover {
   color: var(--color-text-primary);
+  background: var(--color-bg-tertiary);
 }
 
 .nav-link.active {
   color: var(--color-accent-primary);
-}
-
-.nav-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: var(--color-accent-primary);
-  border-radius: var(--radius-full);
+  background: rgba(196, 30, 58, 0.06);
 }
 
 .github-link {
@@ -110,18 +103,19 @@
   align-items: center;
   gap: 4px;
   font-size: 0.875rem;
-  color: var(--color-text-secondary);
+  color: var(--color-text-tertiary);
   transition: color var(--transition-fast);
+  text-decoration: none;
 }
 
 .github-link:hover {
   color: var(--color-text-primary);
 }
 
-/* Responsive styles */
+/* Responsive */
 @media (max-width: 768px) {
   .header-content {
-    height: 56px;
+    height: 52px;
     padding: 0 var(--spacing-md);
   }
 
@@ -131,50 +125,40 @@
   }
 
   .logo-icon {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .logo-text {
     display: none;
-    /* Hide logo text on mobile */
   }
 
   .header-actions {
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
   }
 
   .nav-links {
-    gap: var(--spacing-sm);
+    gap: 2px;
   }
 
   .nav-link {
     font-size: 0.75rem;
-    padding: 2px 0;
+    padding: 4px 8px;
   }
 
   .github-link {
     font-size: 0.75rem;
-  }
-
-  .github-link span {
-    font-size: 18px;
   }
 }
 
 @media (max-width: 480px) {
   .logo-text {
     display: inline;
-    /* Show logo text but smaller */
     font-size: 0.875rem;
   }
 
   .nav-link {
     font-size: 0.7rem;
     white-space: nowrap;
-  }
-
-  .github-link {
-    gap: 2px;
   }
 }
 </style>

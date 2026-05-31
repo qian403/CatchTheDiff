@@ -19,7 +19,7 @@
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
+  border: 3px solid var(--color-border);
   border-radius: 50%;
   border-top-color: var(--color-accent-primary);
   animation: spin 1s ease-in-out infinite;

@@ -1,5 +1,5 @@
 <template>
-  <div class="version-timeline glass-panel">
+  <div class="version-timeline paper-card">
     <h3 class="timeline-header">版本歷史</h3>
     
     <v-timeline density="compact" side="end" line-color="grey-darken-2" truncate-line="both">
@@ -57,17 +57,18 @@ const getDotColor = (version: NewsVersion) => {
 <style scoped>
 .version-timeline {
   padding: var(--spacing-lg);
-  border-radius: var(--radius-lg);
   height: 100%;
   overflow-y: auto;
 }
 
 .timeline-header {
-  font-size: 1.125rem;
+  font-family: var(--font-family-serif);
+  font-size: 1rem;
   font-weight: 600;
   margin-bottom: var(--spacing-lg);
   padding-bottom: var(--spacing-sm);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
 }
 
 .timeline-item-cursor {
@@ -76,18 +77,18 @@ const getDotColor = (version: NewsVersion) => {
 
 .timeline-content {
   padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   border: 1px solid transparent;
   transition: all var(--transition-fast);
 }
 
 .timeline-content:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--color-bg-tertiary);
 }
 
 .timeline-content.active {
-  background-color: rgba(59, 130, 246, 0.1);
-  border-color: rgba(59, 130, 246, 0.3);
+  background-color: rgba(196, 30, 58, 0.06);
+  border-color: rgba(196, 30, 58, 0.2);
 }
 
 .version-time {
@@ -97,7 +98,7 @@ const getDotColor = (version: NewsVersion) => {
 }
 
 .version-title {
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 500;
   line-height: 1.4;
   display: -webkit-box;

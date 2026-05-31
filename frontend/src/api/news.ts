@@ -1,5 +1,15 @@
 import apiClient from './client';
 import type { News, NewsDiff } from '../types';
+import type { SortBy } from '../types/filters';
+
+interface NewsListParams {
+    skip: number;
+    limit: number;
+    q?: string;
+    date?: string;
+    sort_by?: SortBy;
+    sources?: number[];
+}
 
 export const fetchNewsList = async (
     skip: number = 0,
@@ -7,9 +17,9 @@ export const fetchNewsList = async (
     query?: string,
     sources?: number[],
     date?: string,
-    sortBy?: string
+    sortBy?: SortBy
 ): Promise<News[]> => {
-    const params: any = { skip, limit };
+    const params: NewsListParams = { skip, limit };
     if (query) params.q = query;
     if (date) params.date = date;
     if (sortBy) params.sort_by = sortBy;

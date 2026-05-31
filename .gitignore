@@ -172,3 +172,6 @@ $RECYCLE.BIN/
 *.tar.gz
 *.rar
 *.7z
+.omo/
+
+/.memsearch

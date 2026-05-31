@@ -1,5 +1,5 @@
 <template>
-  <div class="news-card glass-panel" @click="$emit('click')">
+  <div class="news-card paper-card" @click="$emit('click')">
     <div class="news-header">
       <div class="source-badge" :style="{ backgroundColor: sourceInfo.color }">
         {{ sourceInfo.name }}
@@ -44,18 +44,14 @@ const formattedTime = computed(() => formatTimestamp(props.news.created_at));
 <style scoped>
 .news-card {
   padding: var(--spacing-lg);
-  border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: all var(--transition-fast);
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
 .news-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-glow);
-  border-color: rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
 }
 
 .news-header {
@@ -66,24 +62,27 @@ const formattedTime = computed(() => formatTimestamp(props.news.created_at));
 }
 
 .source-badge {
-  padding: 4px 8px;
+  padding: 2px 8px;
   border-radius: var(--radius-sm);
+  font-family: var(--font-family-serif);
   font-size: 0.75rem;
   font-weight: 600;
   color: white;
 }
 
 .news-time {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--color-text-tertiary);
 }
 
 .news-title {
-  font-size: 1.125rem;
+  font-family: var(--font-family-serif);
+  font-size: 1.05rem;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.55;
   margin-bottom: var(--spacing-lg);
   flex-grow: 1;
+  color: var(--color-text-primary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -95,7 +94,7 @@ const formattedTime = computed(() => formatTimestamp(props.news.created_at));
   justify-content: space-between;
   align-items: center;
   padding-top: var(--spacing-md);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--color-border);
 }
 
 .version-badge, .update-info {
@@ -103,10 +102,10 @@ const formattedTime = computed(() => formatTimestamp(props.news.created_at));
   align-items: center;
   gap: 4px;
   font-size: 0.75rem;
-  color: var(--color-text-secondary);
+  color: var(--color-text-tertiary);
 }
 
 .material-icons {
-  font-size: 16px;
+  font-size: 14px;
 }
 </style>

@@ -1,4 +1,5 @@
 import httpx
+import hashlib
 from bs4 import BeautifulSoup
 import time
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -157,7 +158,7 @@ async def process_news(db: AsyncSession, url: str, source_id: int):
             return  # 跳過此 URL
     
     # URL 正規化處理
-    normalized_url = normalize_url(url, source_id)
+    normalized_url = normalize_url(url)
     normalized_id = hashlib.md5(normalized_url.encode()).hexdigest()
     
     # 檢查是否已存在

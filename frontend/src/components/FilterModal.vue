@@ -131,7 +131,7 @@ const applyFilters = () => {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(44, 36, 22, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -141,14 +141,14 @@ const applyFilters = () => {
 
 .modal-content {
     background: var(--color-bg-secondary);
-    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     width: 90%;
     max-width: 500px;
     max-height: 90vh;
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow-xl);
-    border: 1px solid var(--color-border);
 }
 
 .modal-header {
@@ -160,9 +160,11 @@ const applyFilters = () => {
 }
 
 .modal-header h3 {
-    font-size: 1.25rem;
+    font-family: var(--font-family-serif);
+    font-size: 1.15rem;
     font-weight: 600;
     margin: 0;
+    color: var(--color-text-primary);
 }
 
 .close-btn {
@@ -171,12 +173,12 @@ const applyFilters = () => {
     color: var(--color-text-tertiary);
     cursor: pointer;
     padding: 4px;
-    border-radius: 50%;
+    border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
 }
 
 .close-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--color-bg-tertiary);
     color: var(--color-text-primary);
 }
 
@@ -191,8 +193,8 @@ const applyFilters = () => {
 }
 
 .filter-section h4 {
-    font-size: 0.875rem;
-    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+    color: var(--color-text-tertiary);
     margin-bottom: var(--spacing-md);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -218,14 +220,14 @@ const applyFilters = () => {
     background: none;
     border: none;
     color: var(--color-accent-primary);
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     cursor: pointer;
     padding: 2px 8px;
     border-radius: var(--radius-sm);
 }
 
 .text-btn:hover {
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(196, 30, 58, 0.06);
 }
 
 .radio-group {
@@ -238,16 +240,23 @@ const applyFilters = () => {
     align-items: center;
     gap: 8px;
     cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
 }
 
 .date-input {
     width: 100%;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.2);
+    padding: 9px 12px;
+    background: var(--color-bg-primary);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     color: var(--color-text-primary);
     font-size: 0.875rem;
+}
+
+.date-input:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
 }
 
 .sources-grid {
@@ -260,18 +269,20 @@ const applyFilters = () => {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px;
-    border-radius: var(--radius-md);
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: background var(--transition-fast);
+    font-size: 0.85rem;
 }
 
 .checkbox-label:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-bg-tertiary);
 }
 
 .checkbox-text {
-    font-size: 0.875rem;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
 }
 
 .modal-footer {
@@ -287,13 +298,14 @@ const applyFilters = () => {
     background: none;
     border: 1px solid var(--color-border);
     color: var(--color-text-secondary);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: all var(--transition-fast);
+    font-size: 0.875rem;
 }
 
 .reset-btn:hover {
-    border-color: var(--color-text-primary);
+    border-color: var(--color-border-hover);
     color: var(--color-text-primary);
 }
 
@@ -302,17 +314,17 @@ const applyFilters = () => {
     background: var(--color-accent-primary);
     color: white;
     border: none;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     font-weight: 600;
     cursor: pointer;
     transition: background var(--transition-fast);
+    font-size: 0.875rem;
 }
 
 .apply-btn:hover {
     background: var(--color-accent-secondary);
 }
 
-/* Custom Checkbox & Radio Styles */
 input[type="checkbox"],
 input[type="radio"] {
     accent-color: var(--color-accent-primary);

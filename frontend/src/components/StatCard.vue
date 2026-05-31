@@ -1,5 +1,5 @@
 <template>
-  <div class="stat-card glass-panel">
+  <div class="stat-card paper-card">
     <div class="stat-icon" :style="{ backgroundColor: props.iconBgColor }">
       <span class="material-icons">{{ props.icon }}</span>
     </div>
@@ -28,27 +28,30 @@ const props = withDefaults(defineProps<Props>(), {
   display: flex;
   align-items: center;
   padding: var(--spacing-lg);
-  border-radius: var(--radius-lg);
-  transition: transform var(--transition-fast);
+  transition: box-shadow var(--transition-fast);
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .stat-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
   margin-right: var(--spacing-md);
-  background-color: rgba(59, 130, 246, 0.1);
   color: white;
 }
 
+.stat-icon .material-icons {
+  font-size: 20px;
+}
+
 .stat-value {
+  font-family: var(--font-family-serif);
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-text-primary);
@@ -56,7 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
 }
 
 .stat-label {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--color-text-tertiary);
   margin-top: 2px;
 }

@@ -199,9 +199,11 @@ async def get_edit_frequency():
             source_stats[source_id]['news'] += 1
             source_stats[source_id]['edits'] += len(news.versions) - 1  # Edits only
         
-        # Convert to ranking list
+        # Convert to ranking list (only sources with edits)
         ranking = []
         for source_id, stats in sorted(source_stats.items(), key=lambda x: x[1]['edits'], reverse=True):
+            if stats['edits'] == 0:
+                continue
             ranking.append({
                 "sourceId": source_id,
                 "sourceName": get_source_name(source_id),

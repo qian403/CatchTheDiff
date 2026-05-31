@@ -13,9 +13,13 @@ from .base import BaseCrawler, NewsItem
 
 class UdnCrawler(BaseCrawler):
     """聯合新聞網爬蟲"""
-    
-    # UDN 即時新聞頁面
+
     BASE_URL = "https://udn.com/news/breaknews"
+
+    # 要排除的子分類 ID（爛內容）
+    BLOCKED_CATEGORIES = [
+        "7268",  # 星座命理
+    ]
     
     def __init__(self, source_id: int = 8):
         super().__init__(source_id)
@@ -48,6 +52,10 @@ class UdnCrawler(BaseCrawler):
                     # 取得標題
                     title = link.get_text(strip=True)
                     if not title or len(title) < 5:
+                        continue
+
+                    # 跳過被封鎖的分類
+                    if any(f"/story/{cat}/" in url for cat in self.BLOCKED_CATEGORIES):
                         continue
                     
                     # UDN 沒有提供發布時間，使用當前時間
